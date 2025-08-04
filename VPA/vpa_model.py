@@ -58,6 +58,8 @@ def calculate_N(M, C_ay, N_AY):
       else:
         N_ay[j,i] = N_ay[j+1,i+1]*np.exp(M) + C_ay[j,i]*np.exp(M/2)
 
+  return N_ay
+
 
 
 
@@ -88,6 +90,8 @@ def calculate_N_vectorized(M, C_ay, N_AY):
     
       # then at the last age we'd need N_ay[a_MAX + 1, y] so we just use N_ay[a_MAX]
       N_ay[-1,i] = N_ay[-1, i+1] * np.exp(M) + C_ay[-1,i].T * np.exp(M/2)
+
+    return N_ay
   
 
   
