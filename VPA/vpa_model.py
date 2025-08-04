@@ -77,21 +77,21 @@ def calculate_N_vectorized(M, C_ay, N_AY):
     N_ay (np.array) - estimated population-at-age, shape [ages, years]
   """
 
-    a, y = C_ay.shape
-    N_ay = np.zeros([a,y])
-    N_ay[:,-1] = N_AY.flatten() # survivors
-  
-    # the last age group is tricky - it'd need a_MAX + 1 which doesn't
-    # exist, so we assume all age classes beyond a_MAX are just a_MAX
-    
-    for i in reversed(range(y-1)):
-      # calculate from penultimate age class backwards
-      N_ay[:-1,i] = N_ay[1:,i+1] * np.exp(M) + C_ay[:-1,i].T * np.exp(M/2)
-    
-      # then at the last age we'd need N_ay[a_MAX + 1, y] so we just use N_ay[a_MAX]
-      N_ay[-1,i] = N_ay[-1, i+1] * np.exp(M) + C_ay[-1,i].T * np.exp(M/2)
+  a, y = C_ay.shape
+  N_ay = np.zeros([a,y])
+  N_ay[:,-1] = N_AY.flatten() # survivors
 
-    return N_ay
+  # the last age group is tricky - it'd need a_MAX + 1 which doesn't
+  # exist, so we assume all age classes beyond a_MAX are just a_MAX
+  
+  for i in reversed(range(y-1)):
+    # calculate from penultimate age class backwards
+    N_ay[:-1,i] = N_ay[1:,i+1] * np.exp(M) + C_ay[:-1,i].T * np.exp(M/2)
+  
+    # then at the last age we'd need N_ay[a_MAX + 1, y] so we just use N_ay[a_MAX]
+    N_ay[-1,i] = N_ay[-1, i+1] * np.exp(M) + C_ay[-1,i].T * np.exp(M/2)
+
+  return N_ay
   
 
   
