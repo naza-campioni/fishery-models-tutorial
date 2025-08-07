@@ -65,9 +65,9 @@ def calculate_ln_r(N_ay, u_ay, w):
   """
   ln_ratio = np.log(N_ay/u_ay)
   num_r = np.sum(w*ln_ratio, axis=1) # sum over years
-  den_r = np.sum(w, axis=1) # sum over years
+  den_r = np.sum(w, axis=1)          # sum over years
   
-  ln_r = num_r/den_r     # equation 19
+  ln_r = num_r/den_r                 # equation 19
   return ln_r 
 
 def calculate_adjusted_weights(a, y, w, F_ay):
@@ -76,7 +76,7 @@ def calculate_adjusted_weights(a, y, w, F_ay):
   """
   ECF = np.zeros((a,y))
   for age in range(a):
-    ECF[age,:] = np.exp(np.sum(F_ay[age:,:], axis=0))  # sum over ages    
+    ECF[age,:] = np.exp(np.sum(F_ay[age:,:], axis=0))  # sum over ages from "age" -> older ages have lower cumulative sum    
   w_1 = w/ECF    
   return w_1
 
@@ -100,6 +100,7 @@ def estimate_Pk(ln_r, u_ay, w_1, cumZ):
 def diagonal_N_ay(a, y, Pk, ECM, C_ay, M_ay):
   """
   Reconstruction of diagonal of N_ay through P_t(k)
+  This is Equation 13 & 14
   """
   N_ay = np.zeros((a, y))
   for age in range(a):
@@ -110,8 +111,8 @@ def diagonal_N_ay(a, y, Pk, ECM, C_ay, M_ay):
         P_c = 0
         for i in range(age, a):
           if 0 <= k + i < y:
-            P_c += ECM[i, k + i] * C_ay[i, k + i] * np.exp(-0.5 * M_ay[i, k + i])
-            N_ay[age, year] = N_ + P_c
+            P_c += ECM[i, k + i] * C_ay[i, k + i] * np.exp(-0.5 * M_ay[i, k + i])   # equation 14
+            N_ay[age, year] = N_ + P_c                                              # equation 13
       else:
         N_ay[age,year] = 0
 
@@ -121,7 +122,7 @@ def fill_last_age_zeros(a, y, N_ay, C_ay, M):
   """
   Fill in the zero entries from the last age through VPA
   """
-  for year in reversed(range(y-(y-a)-1)):
+  for year in reversed(range(y-(y-a)-1)):   # this is the index for the last year in the data of the first cohort (in the example it's year 1994 for cohort 1990)
     N_ay[-1, year] = N_ay[-1, year +1]*np.exp(M) + C_ay[-1,year]*np.exp(M/2)
     
   return N_ay
@@ -146,6 +147,7 @@ def reconstruct_Nay(a, y, Pk, ECM, M_ay, C_ay):
 def main_XSA(a, y, C_ay, u_ay, M, F_AY, w, iterations=5):
   """
     Main XSA function implementing Shepherd's Extended Survivors Analysis algorithm.
+    Simple for loop applying Equations 19, 22 and calculation of needed quantities iteratively.
 
     Parameters:
     - C_ay: np.array, catch-at-age [a x y]
