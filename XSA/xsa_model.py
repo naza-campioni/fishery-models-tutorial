@@ -67,10 +67,11 @@ def calculate_ln_r(N_ay, u_ay, w):
   ln_r = num_r/den_r     # equation 19
   return ln_r 
 
-def calculate_adjusted_weights(a, w, F_ay):
+def calculate_adjusted_weights(a, y, w, F_ay):
   """
   weights adjustment as per after equation 22
   """
+  ECF = np.zeros((a,y))
   for age in range(a):
     ECF[age,:] = np.exp(np.sum(F_ay[age:,:], axis=0))  # sum over ages    
   w_1 = w/ECF    
@@ -149,7 +150,7 @@ def main_XSA(a, y, C_ay, u_ay, M, F_AY, w, iterations=5):
     F_ay = calculate_F_ay(a, y, N_ay, M, F_AY)
     cumZ = calculate_cumZ(a, y, F_ay, M_ay)
     ln_r = calculate_ln_r(N_ay, u_ay, w)
-    w_1 = calculate_adjusted_weights(a, w, F_ay)    
+    w_1 = calculate_adjusted_weights(a, y, w, F_ay)    
     Pk = estimate_Pk(ln_r, u_ay, w_1, cumZ)
     N_ay = reconstruct_N_ay(a, y, Pk, ECM, C_ay, M_ay)
 
