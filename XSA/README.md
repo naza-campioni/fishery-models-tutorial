@@ -33,6 +33,11 @@ An alternative approach would be to calculate F_ay through Baranov's equation - 
 
 ---
 
+## Understanding P_t(k)
+P_t(k) is the terminal population (hence subscript t) at the end of the final year of the cohort, i.e. the final *age* of the cohort, namely the **survivors of that cohort** after all ages have been observed.
+The cohort index is *k = y - a*, where y is year and a is age. In the example in the notebook we have a = 5, y = 7, meaning ages range from age 0 to age 4 and we assume years range from 1990 to 1996. We therefore see in our data 11 cohorts, from 1986 to 1996; however, we only observe cohorts 1990-1996 from the start, so P_t(k) estimates the survivors of these cohorts. 
+For example, P_t[6] is the terminal population of cohort 1996 at the age of 4, meaning at year 2000. This is why using P_t(k) leads to a diagonal estimate of N_ay: we only get values where the age and year line up to form a cohort, i.e., y - a = k. Therefore, cohorts before 1990 will not have their P_t(k) estimated, and their diagonals in N_ay will remain unfilled unless reconstructed via VPA.
+
 
 **Author:** Nazareno Campioni  
 **Based on:** Shepherd (1999) – *Extended Survivors Analysis: an improved method for the estimation of stock abundance from catch and survey data*  
