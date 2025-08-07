@@ -10,5 +10,5 @@ Each folder contains:
 - A demo notebook explaining the method step-by-step
 - Example data and outputs
 
-Author: Nazareno Campioni
-Contact: github.com/naza-campioni
+**Author**: Nazareno Campioni
+**Contact**: github.com/naza-campioni
