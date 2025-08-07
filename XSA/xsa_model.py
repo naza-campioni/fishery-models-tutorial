@@ -77,6 +77,7 @@ def calculate_adjusted_weights(a, w, F_ay):
   return w_1
 
 def calculate_cumZ(a, F_ay, M_ay):
+  cumZ = np.zeros((a,y))
   Z_ay = F_ay + M_ay
   for age in range(a):
     cumZ[age,:] = np.sum(Z_ay[age:,:], axis=0)
