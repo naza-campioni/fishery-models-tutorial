@@ -86,27 +86,27 @@ def estimate_Pk(ln_r, u_ay, w_1, cumZ):
   """
   equation 22
   """
-    num = np.sum(w_1 * (np.log(u_ay) + ln_r[:, np.newaxis] - cumZ), axis=0)
-    den = np.sum(w_1, axis=0)
-    ln_Pk = num / den
-    return np.exp(ln_Pk)
+  num = np.sum(w_1 * (np.log(u_ay) + ln_r[:, np.newaxis] - cumZ), axis=0)
+  den = np.sum(w_1, axis=0)
+  ln_Pk = num / den
+  return np.exp(ln_Pk)
 
 def reconstruct_N_ay(a, y, Pk, ECM, C_ay, M_ay):
   """
   reconstruction of N_ay through P_t(k) and VPA
   """
-    N_ay = np.zeros((a, y))
-    for age in range(a):
-      for year in range(y):
-        k = year - age
-        if 0 <= k < len(Pk):
-          N_ = Pk[k] * ECM[age, year]
-          P_c = 0
-          for i in range(age, a):
-            if 0 <= k + i < y:
-              P_c += ECM[i, k + i] * C_ay[i, k + i] * np.exp(-0.5 * M_ay[i, k + i])
-              N_ay[age, year] = N_ + P_c
-    return N_ay
+  N_ay = np.zeros((a, y))
+  for age in range(a):
+    for year in range(y):
+      k = year - age
+      if 0 <= k < len(Pk):
+        N_ = Pk[k] * ECM[age, year]
+        P_c = 0
+        for i in range(age, a):
+          if 0 <= k + i < y:
+            P_c += ECM[i, k + i] * C_ay[i, k + i] * np.exp(-0.5 * M_ay[i, k + i])
+            N_ay[age, year] = N_ + P_c
+  return N_ay
 
 def main_XSA(a, y, C_ay, u_ay, M, F_AY, w, iterations=5):
   """
