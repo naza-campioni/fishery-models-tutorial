@@ -52,7 +52,7 @@ def calculate_F_ay(a, y, N_ay, M, F_AY):
   F_ay[-1, :-1] = F_ay[-2, :-1]  # plus group
   F_ay[:, -1] = F_AY             # terminal year
 
-  F_ay = np.where(F_ay < 0.05, 0.1, F_ay) # clip to avoid blowup of population estimates
+  F_ay = np.where(F_ay < 0.08, 0.1, F_ay) # clip to avoid blowup of population estimates
   F_ay = np.where(F_ay > 2.0, 2.0, F_ay)
   return F_ay
 
