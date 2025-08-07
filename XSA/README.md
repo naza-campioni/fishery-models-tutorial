@@ -19,7 +19,7 @@ It is particularly useful when:
 ---
 
 ## How it Works
-This implementation is based on the 1999 Shepherd's paper *Extended Survivors Analysis: an improved method for the estimation of stock abundance from catch and survey data*. Thus, the method does not include shrinkage of age - qage, rage - nor other more recent tunings.
+This implementation is based on the 1999 Shepherd's paper *Extended Survivors Analysis: an improved method for the estimation of stock abundance from catch and survey data*. Thus, the method does not include more recent enhancements such as shrinkage tuning (e.g., qage, rage) found in ICES implementations.
 
 XSA estimates `N_ay` by:
 1. Starting with a VPA estimate of `N_ay`.
@@ -30,6 +30,16 @@ Step 3 leads to an estimate of the survivors for each cohort `P_t(k)` which prod
 
 The fishing mortality matrix F_ay is reconstructed via the population dynamics equation. Since this estimate depends on `N_ay`, which may be noisy, we specify a minimum fishing mortality threshold to avoid unrealistic growth of population abundance.
 An alternative approach would be to calculate F_ay through Baranov's equation - not implemented here.
+
+### Stabilization Heuristic
+`F_ay` is clipped to a minimum of `0.2` to prevent explosive growth in reconstructed populations. This reflects the idea that low fishing mortality leads to very low total mortality `Z_ay`, which can unrealistically inflate back-calculated abundances.
+
+### Future improvements
+The current implementation is a clean proof-of-concept that reproduces the main equations in Shepherd (1999). The following improvements could be explored:
+
+1. At this stage, there is no convergence check but the algorithm runs for a predetermined number of iterations. 
+2. `F_ay` is calculated through the population dynamics equation - no solution to Baranov's equation is provided here. Other enhanced XSA implementations introduce statistical handling of `F_ay`.
+3. Inclusion of model diagnostics.
 
 ---
 
