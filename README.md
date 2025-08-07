@@ -11,4 +11,5 @@ Each folder contains:
 My goal is to guide the curious practitioner and new modellers through the implementation of standard fishery models from scratch.
 
 **Author**: Nazareno Campioni
+
 **Contact**: github.com/naza-campioni
