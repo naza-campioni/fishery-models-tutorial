@@ -147,7 +147,7 @@ def main_XSA(a, y, C_ay, u_ay, M, F_AY, w, iterations=5):
 
   for it in tqdm(range(iterations)):
     F_ay = calculate_F_ay(a, y, N_ay, M, F_AY)
-    cumZ = calculate_cumZ(a, F_ay, M_ay)
+    cumZ = calculate_cumZ(a, y, F_ay, M_ay)
     ln_r = calculate_ln_r(N_ay, u_ay, w)
     w_1 = calculate_adjusted_weights(a, w, F_ay)    
     Pk = estimate_Pk(ln_r, u_ay, w_1, cumZ)
