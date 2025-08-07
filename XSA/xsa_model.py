@@ -35,7 +35,7 @@ def calculate_N_VPA(M, C_ay, N_AY):
         N_ay[age, year] = N_ay[age +1, year +1]*np.exp(M) + C_ay[age,year]*np.exp(M/2)
   return N_ay
 
-def calculate_F_ay(a, y):
+def calculate_F_ay(a, y, N_ay):
   """
   population dynamics equation solved for F_ay
   """
@@ -144,7 +144,7 @@ def main_XSA(a, y, C_ay, u_ay, M, F_AY, w, iterations=5):
     ECM[age, :] = np.exp(np.sum(M_ay[age:, :], axis=0))    
 
   for it in tqdm(range(iterations)):
-    F_ay = calculate_F_ay(a, y)
+    F_ay = calculate_F_ay(a, y, N_ay)
     cumZ = calculate_cumZ(a, F_ay, M_ay)
     ln_r = calculate_ln_r(N_ay, u_ay, w)
     w_1 = calculate_adjusted_weights(a, w, F_ay)    
