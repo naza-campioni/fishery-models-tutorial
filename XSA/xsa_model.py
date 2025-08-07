@@ -112,13 +112,13 @@ def reconstruct_N_ay(a, y, Pk, ECM, C_ay, M_ay):
 
   # fill in the zero entries from the last age through VPA
   for year in reversed(range(y-(y-a)-1)):
-    N_ay[-1, year] = N_ay[-1, year +1]*np.exp(M) + C_ay[-1,year]*np.exp(M/2)
+    N_ay[-1, year] = N_ay[-1, year +1]*np.exp(M_ay[age,year]) + C_ay[-1,year]*np.exp(M_ay[age,year]/2)
 
   # fill in the remaining zero entries
   for age in reversed(range(1,a-1)):
     for year in reversed(range(y-(y-a)-1)):
       if N_ay[age,year] == 0 and N_ay[age+1,year+1]>0:
-        N_ay[age,year] = N_ay[age +1, year +1]*np.exp(M) + C_ay[age,year]*np.exp(M/2)
+        N_ay[age,year] = N_ay[age +1, year +1]*np.exp(M_ay[age,year]) + C_ay[age,year]*np.exp(M_ay[age,year]/2)
   return N_ay
 
 def main_XSA(a, y, C_ay, u_ay, M, F_AY, w, iterations=5):
