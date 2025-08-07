@@ -94,9 +94,9 @@ def estimate_Pk(ln_r, u_ay, w_1, cumZ):
   ln_Pk = num / den
   return np.exp(ln_Pk)
 
-def reconstruct_N_ay(a, y, Pk, ECM, C_ay, M_ay):
+def diagonal_N_ay(a, y, Pk, ECM, C_ay, M_ay):
   """
-  reconstruction of N_ay through P_t(k) and VPA
+  reconstruction of diagonal of N_ay through P_t(k)
   """
   N_ay = np.zeros((a, y))
   for age in range(a):
@@ -109,16 +109,35 @@ def reconstruct_N_ay(a, y, Pk, ECM, C_ay, M_ay):
           if 0 <= k + i < y:
             P_c += ECM[i, k + i] * C_ay[i, k + i] * np.exp(-0.5 * M_ay[i, k + i])
             N_ay[age, year] = N_ + P_c
+      else:
+        N_ay[age,year] = 0
 
-  # fill in the zero entries from the last age through VPA
+  return N_ay
+      
+def fill_last_age_zeros(a, y, N_ay, C_ay, M):
+  """
+  Fill in the zero entries from the last age through VPA
+  """
   for year in reversed(range(y-(y-a)-1)):
-    N_ay[-1, year] = N_ay[-1, year +1]*np.exp(M_ay[age,year]) + C_ay[-1,year]*np.exp(M_ay[age,year]/2)
+    N_ay[-1, year] = N_ay[-1, year +1]*np.exp(M) + C_ay[-1,year]*np.exp(M/2)
+    
+  return N_ay
 
-  # fill in the remaining zero entries
+def fill_remaining_zeros(a, y, N_ay, C_ay, M):
+  """
+  Fill in the remaining zero entries through VPA
+  """
   for age in reversed(range(1,a-1)):
     for year in reversed(range(y-(y-a)-1)):
       if N_ay[age,year] == 0 and N_ay[age+1,year+1]>0:
-        N_ay[age,year] = N_ay[age +1, year +1]*np.exp(M_ay[age,year]) + C_ay[age,year]*np.exp(M_ay[age,year]/2)
+        N_ay[age,year] = N_ay[age +1, year +1]*np.exp(M) + C_ay[age,year]*np.exp(M/2)
+        
+  return N_ay
+
+def reconstruct_Nay(a, y, Pk, ECM, M_ay, C_ay):
+  N_ay = diagonal_N_ay(a, y, Pk, ECM, C_ay, M_ay)
+  N_ay = fill_last_age_zeros(a, y, N_ay, C_ay, M_ay[0,0])  # M_ay is constant
+  N_ay = fill_remaining_zeros(a, y, N_ay, C_ay, M_ay[0,0])
   return N_ay
 
 def main_XSA(a, y, C_ay, u_ay, M, F_AY, w, iterations=5):
@@ -163,7 +182,7 @@ def main_XSA(a, y, C_ay, u_ay, M, F_AY, w, iterations=5):
     ln_r = calculate_ln_r(N_ay, u_ay, w)
     w_1 = calculate_adjusted_weights(a, y, w, F_ay)    
     Pk = estimate_Pk(ln_r, u_ay, w_1, cumZ)
-    N_ay = reconstruct_N_ay(a, y, Pk, ECM, C_ay, M_ay)
+    N_ay = reconstruct_Nay(a, y, Pk, ECM, M_ay, C_ay)
 
   return N_ay, F_ay, Pk, first_Nay
     
