@@ -144,6 +144,7 @@ def main_XSA(a, y, C_ay, u_ay, M, F_AY, w, iterations=5):
   
   # calculate full population-at-age matrix using Pope's approximation
   N_ay = calculate_N_VPA(M, C_ay, N_AY)
+  first_Nay = N_ay
   
   # initialize quantities
   M_ay = np.ones((a,y))*M     # natural mortality matrix - constant through ages&years
@@ -164,7 +165,7 @@ def main_XSA(a, y, C_ay, u_ay, M, F_AY, w, iterations=5):
     Pk = estimate_Pk(ln_r, u_ay, w_1, cumZ)
     N_ay = reconstruct_N_ay(a, y, Pk, ECM, C_ay, M_ay)
 
-  return N_ay, F_ay, Pk
+  return N_ay, F_ay, Pk, first_Nay
     
   
 
