@@ -36,17 +36,20 @@ def calculate_N_VPA(M, C_ay, N_AY):
   return N_ay
 
 def calculate_F_ay(a, y):
+  """
+  population dynamics equation solved for F_ay
+  """
   for age in range(a-1):
     for year in range(y-1):
       num = N_ay[age, year]
       den = N_ay[age+1, year+1]
       if num > 0 and den > 0:
-          F_ay[age,year] = max(1e-6, np.log(num / den) - M) # population dynamics equation
+          F_ay[age,year] = max(1e-6, np.log(num / den) - M) 
       else:
           F_ay[age,year] = F_AY  # fallback
 
   F_ay[-1, :-1] = F_ay[-2, :-1]  # plus group
-  F_ay[:, -1] = F_AY            # terminal year
+  F_ay[:, -1] = F_AY             # terminal year
 
   F_ay = np.where(F_ay < 0.05, 0.1, F_ay) # clip to avoid blowup of population estimates
   F_ay = np.where(F_ay > 2.0, 2.0, F_ay)
