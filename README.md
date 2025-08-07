@@ -8,7 +8,7 @@ Each folder contains:
 - Clean, commented, reusable Python functions
 - A demo notebook showcasing the model usage
 
-My goal is to guide the curious practitioner and new modellers through the implementation of standard fishery models from scratch.
+My goal is to guide the curious practitioner and new modellers through the implementation of standard fishery models from scratch. I hope you find this helpful!
 
 **Author**: Nazareno Campioni
 
