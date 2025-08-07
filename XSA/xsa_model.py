@@ -39,6 +39,7 @@ def calculate_F_ay(a, y, N_ay, M, F_AY):
   """
   population dynamics equation solved for F_ay
   """
+  F_ay = np.zeros((a,y))
   for age in range(a-1):
     for year in range(y-1):
       num = N_ay[age, year]
