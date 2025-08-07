@@ -39,7 +39,5 @@ The cohort index is `k = y - a`, where y is year and a is age. In the example in
 For example, `P_t[6]` is the terminal population of cohort 1996 at the age of 4, meaning at year 2000. This is why using P_t(k) leads to a diagonal estimate of `N_ay`: we only get values where the age and year line up to form a cohort, i.e., `y - a = k`. Therefore, cohorts before 1990 will not have their `P_t(k)` estimated, and their diagonals in `N_ay` will remain unfilled unless reconstructed via VPA.
 
 
-**Author:** Nazareno Campioni  
 **Based on:** Shepherd (1999) – *Extended Survivors Analysis: an improved method for the estimation of stock abundance from catch and survey data*  
-**Language:** Python 3  
-**Repository:** https://github.com/naza-campioni/fishery-models-tutorial/XSA
+**Language:** Python 3
