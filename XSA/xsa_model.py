@@ -180,6 +180,7 @@ def main_XSA(a, y, C_ay, u_ay, M, F_AY, w, iterations=5):
     F_ay = calculate_F_ay(a, y, N_ay, M, F_AY)
     cumZ = calculate_cumZ(a, y, F_ay, M_ay)
     ln_r = calculate_ln_r(N_ay, u_ay, w)
+    print('ln_r {ln_r}\n')
     w_1 = calculate_adjusted_weights(a, y, w, F_ay)    
     Pk = estimate_Pk(ln_r, u_ay, w_1, cumZ)
     N_ay = reconstruct_Nay(a, y, Pk, ECM, M_ay, C_ay)
