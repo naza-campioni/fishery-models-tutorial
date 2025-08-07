@@ -4,7 +4,7 @@
 
 ## What is XSA?
 
-**Extended Survivors Analysis (XSA)** is an extension of **Virtual Population Analysis (VPA)** used in fisheries science to reconstruct population-at-age (`N_ay`) from **catch-at-age** (`C_ay`) and **survey indices** (`u_ay`).
+**Extended Survivors Analysis (XSA)** is an extension of **Virtual Population Analysis (VPA)** used in fisheries science to reconstruct **population-at-age** (`N_ay`) from **catch-at-age** (`C_ay`) and **survey indices** (`u_ay`).
 
 Unlike VPA, XSA incorporates:
 - **Abundance indices** to tune fishing mortality estimates,
