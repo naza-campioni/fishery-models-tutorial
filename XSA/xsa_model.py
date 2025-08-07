@@ -37,7 +37,10 @@ def calculate_N_VPA(M, C_ay, N_AY):
 
 def calculate_F_ay(a, y, N_ay, M, F_AY):
   """
-  population dynamics equation solved for F_ay
+  Population dynamics equation solved for F_ay
+  Clips low fishing mortality values to a minimum of 0.2.
+  This avoids runaway growth in N_ay estimates due to weak exponential decay
+  when Z = F + M is too small.
   """
   F_ay = np.zeros((a,y))
   for age in range(a-1):
@@ -52,13 +55,13 @@ def calculate_F_ay(a, y, N_ay, M, F_AY):
   F_ay[-1, :-1] = F_ay[-2, :-1]  # plus group
   F_ay[:, -1] = F_AY             # terminal year
 
-  F_ay = np.where(F_ay < 0.05, 0.05, F_ay) # clip to avoid blowup of population estimates
+  F_ay = np.where(F_ay < 0.1, 0.2, F_ay) # clip to avoid blowup of population estimates
   F_ay = np.where(F_ay > 2.0, 2.0, F_ay)
   return F_ay
 
 def calculate_ln_r(N_ay, u_ay, w):
   """
-  equation 19
+  Equation 19
   """
   ln_ratio = np.log(N_ay/u_ay)
   num_r = np.sum(w*ln_ratio, axis=1) # sum over years
@@ -69,7 +72,7 @@ def calculate_ln_r(N_ay, u_ay, w):
 
 def calculate_adjusted_weights(a, y, w, F_ay):
   """
-  weights adjustment as per after equation 22
+  Weights adjustment as per after equation 22
   """
   ECF = np.zeros((a,y))
   for age in range(a):
@@ -87,7 +90,7 @@ def calculate_cumZ(a, y, F_ay, M_ay):
 
 def estimate_Pk(ln_r, u_ay, w_1, cumZ):
   """
-  equation 22
+  Equation 22
   """
   num = np.sum(w_1 * (np.log(u_ay) + ln_r[:, np.newaxis] - cumZ), axis=0)
   den = np.sum(w_1, axis=0)
@@ -96,7 +99,7 @@ def estimate_Pk(ln_r, u_ay, w_1, cumZ):
 
 def diagonal_N_ay(a, y, Pk, ECM, C_ay, M_ay):
   """
-  reconstruction of diagonal of N_ay through P_t(k)
+  Reconstruction of diagonal of N_ay through P_t(k)
   """
   N_ay = np.zeros((a, y))
   for age in range(a):
