@@ -136,7 +136,7 @@ def neg_ll(theta, data):
   C_hat = calculate_C_hat(s, F_y, M_ay, N_ay)
 
   F_ay = s[...,np.newaxis]*F_y[...,np.newaxis].T
-  Z = F_ay + M
+  Z = F_ay + M_ay
 
   I_hat = calculate_I_hat(q, N_ay, ts, Z)
   C_tot_hat = calculate_C_tot_hat(C_hat)
